@@ -30,15 +30,14 @@ jobs:
       - name: Install Capacitor
         run: npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Verify capacitor.config.json
+      - name: Ensure capacitor.config.json exists
         run: |
-          if [ -f "capacitor.config.json" ]; then
-            echo "✅ capacitor.config.json found"
-          else
+          if [ ! -f "capacitor.config.json" ]; then
             echo '{"appId":"com.ethio.ministry","appName":"Ethio Ministry","webDir":"www"}' > capacitor.config.json
           fi
+          cat capacitor.config.json
 
-      - name: Prepare www folder (from minstryV1)
+      - name: Prepare www folder from minstryV1
         run: |
           mkdir -p www
           cp -r ./minstryV1/* www/ 2>/dev/null || true
@@ -56,11 +55,10 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Set JAVA_HOME for Gradle and build
+      - name: Build APK with Java 17
         run: |
-          echo "JAVA_HOME=$JAVA_HOME"
           cd android
-          # Kill any existing daemon to pick up new Java
+          # Kill any daemon that might be using the wrong Java
           ./gradlew --stop
           # Build with explicit Java home
           ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME --stacktrace
