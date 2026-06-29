@@ -19,17 +19,17 @@ jobs:
           node-version: 20
 
       - name: Install Capacitor
-        run: |
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+        run: npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Ensure capacitor.config.json exists
+      - name: Verify capacitor.config.json exists
         run: |
-          if [ ! -f "capacitor.config.json" ]; then
+          if [ -f "capacitor.config.json" ]; then
+            echo "✅ capacitor.config.json found"
+            cat capacitor.config.json
+          else
+            echo "❌ capacitor.config.json missing – creating default"
             echo '{"appId":"com.ethio.ministry","appName":"Ethio Ministry","webDir":"www"}' > capacitor.config.json
           fi
-
-      - name: Show capacitor.config.json (debug)
-        run: cat capacitor.config.json
 
       - name: Ensure www folder has content
         run: |
@@ -38,9 +38,6 @@ jobs:
             mkdir -p www
             cp -r ./* www/ 2>/dev/null || true
           fi
-
-      - name: Initialize Capacitor with explicit parameters
-        run: npx cap init Ethio Ministry com.ethio.ministry --web-dir www
 
       - name: Add Android Platform
         run: npx cap add android
