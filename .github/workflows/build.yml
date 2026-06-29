@@ -24,6 +24,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Verify Java version
+        run: java -version
+
       - name: Install Capacitor
         run: npm install @capacitor/core @capacitor/cli @capacitor/android
 
@@ -53,11 +56,14 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Build APK
+      - name: Set JAVA_HOME for Gradle and build
         run: |
+          echo "JAVA_HOME=$JAVA_HOME"
           cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          # Kill any existing daemon to pick up new Java
+          ./gradlew --stop
+          # Build with explicit Java home
+          ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
