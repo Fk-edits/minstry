@@ -25,22 +25,18 @@ jobs:
         run: |
           if [ -f "capacitor.config.json" ]; then
             echo "✅ capacitor.config.json found"
-            cat capacitor.config.json
           else
             echo '{"appId":"com.ethio.ministry","appName":"Ethio Ministry","webDir":"www"}' > capacitor.config.json
           fi
 
-      - name: Prepare www folder
+      - name: Prepare www folder (from minstryV1)
         run: |
-          # Create www if missing
           mkdir -p www
-          # Copy all files from root to www (overwrite)
-          cp -r ./* www/ 2>/dev/null || true
-          # Verify index.html is there
+          cp -r ./minstryV1/* www/ 2>/dev/null || true
           if [ -f "www/index.html" ]; then
             echo "✅ index.html found in www"
           else
-            echo "❌ index.html NOT found in www – listing www contents:"
+            echo "❌ index.html NOT found – listing www contents:"
             ls -la www/
             exit 1
           fi
