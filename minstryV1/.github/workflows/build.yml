@@ -3,6 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,6 +21,12 @@ jobs:
       - name: Install Capacitor
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
+
+      - name: Initialize Capacitor
+        run: npx cap init Ethio Ministry com.ethio.ministry --web-dir www
+
+      - name: Add Android Platform
+        run: npx cap add android
 
       - name: Sync Capacitor
         run: npx cap sync android
