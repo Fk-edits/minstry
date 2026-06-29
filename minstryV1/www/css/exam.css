@@ -1,0 +1,40 @@
+.exam-container { max-width: 720px; margin: 0 auto; padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+.progress-bar { width: 100%; height: 6px; background: var(--border-color); border-radius: 10px; margin-bottom: 0.3rem; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 10px; transition: width 0.4s ease; }
+.progress-text { display: block; text-align: right; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; }
+.question-card { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border-color); flex: 1; display: flex; flex-direction: column; }
+.passage { background: var(--bg-primary); padding: 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--accent); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem; color: var(--text-secondary); }
+.question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.2rem; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+.option { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1rem; border: 2px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); background: var(--bg-primary); }
+.option:hover:not(.disabled) { border-color: var(--accent); background: var(--bg-hover); }
+.option .letter { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-secondary); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: var(--text-secondary); flex-shrink: 0; }
+.option .text { flex: 1; font-size: 0.95rem; }
+.option.selected { border-color: var(--accent); background: var(--accent-light); }
+.option.selected .letter { background: var(--accent); color: white; border-color: var(--accent); }
+.option.correct { border-color: var(--success); background: var(--success-light); }
+.option.correct .letter { background: var(--success); color: white; border-color: var(--success); }
+.option.wrong { border-color: var(--danger); background: var(--danger-light); }
+.option.wrong .letter { background: var(--danger); color: white; border-color: var(--danger); }
+.option.disabled { pointer-events: none; opacity: 0.7; }
+.nav-buttons { display: flex; justify-content: space-between; gap: 0.8rem; margin-top: auto; }
+.btn { padding: 0.6rem 1.2rem; border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.4rem; }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); }
+.btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover:not(:disabled) { background: #059669; }
+#submitSection { text-align: center; margin-top: 1rem; }
+#submitSection .btn { padding: 0.8rem 2rem; font-size: 1rem; }
+#resultContainer { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid var(--border-color); margin-top: 1rem; animation: fadeIn 0.4s ease; }
+.result-summary { text-align: center; padding: 1rem 0; }
+.result-summary .score { font-size: 3rem; font-weight: 700; color: var(--accent); }
+.result-summary .label { font-size: 1rem; color: var(--text-secondary); }
+.result-details { margin-top: 1rem; max-height: 300px; overflow-y: auto; }
+.result-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+.result-item .status.correct { color: var(--success); }
+.result-item .status.wrong { color: var(--danger); }
+#resultBackBtn { margin-top: 1rem; width: 100%; justify-content: center; }

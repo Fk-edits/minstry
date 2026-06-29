@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Admin – Ethio Ministry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-title">📚 <span>Admin</span> Panel</div>
+  <div class="header-right">
+    <div class="grade-toggle" id="gradeToggleGroup">
+      <button class="grade-toggle-btn active" data-grade="grade6">G6</button>
+      <button class="grade-toggle-btn" data-grade="grade8">G8</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+    <button class="settings-btn" id="settingsGearBtn" title="Settings"><i class="fas fa-cog"></i></button>
+    <button class="logout-btn" id="logoutBtn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+  </div>
+</div>
+
+<!-- ===== LOADING ===== -->
+<div class="loading" id="loadingOverlay">
+  <i class="fas fa-spinner fa-spin"></i>
+  <p>Loading admin dashboard...</p>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div id="adminContent" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+  <div class="main">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="stats"><i class="fas fa-chart-line"></i><span class="label">Stats</span></button>
+      <button class="tab-btn" data-tab="users"><i class="fas fa-users"></i><span class="label">Users</span></button>
+      <button class="tab-btn" data-tab="questions"><i class="fas fa-question-circle"></i><span class="label">Questions</span></button>
+      <button class="tab-btn" data-tab="notes"><i class="fas fa-sticky-note"></i><span class="label">Notes</span></button>
+      <button class="tab-btn" data-tab="payments"><i class="fas fa-credit-card"></i><span class="label">Payments</span></button>
+      <button class="tab-btn" data-tab="settings"><i class="fas fa-cog"></i><span class="label">Settings</span></button>
+    </div>
+
+    <!-- STATS -->
+    <div class="tab-content active" id="tabStats">
+      <div class="time-filter" id="timeFilter">
+        <button class="active" data-period="24h">24h</button>
+        <button data-period="7d">7d</button>
+        <button data-period="30d">30d</button>
+        <button data-period="365d">365d</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div><div class="stat-change up" id="statUsersChange">+0%</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-question-circle"></i></div><div class="stat-value" id="statQuestions">0</div><div class="stat-label">Total Questions</div><div class="stat-change up" id="statQuestionsChange">+0%</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value" id="statAttempts">0</div><div class="stat-label">Total Attempts</div><div class="stat-change up" id="statAttemptsChange">+0%</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-credit-card"></i></div><div class="stat-value" id="statRevenue">0</div><div class="stat-label">Revenue (Birr)</div><div class="stat-change up" id="statRevenueChange">+0%</div></div>
+      </div>
+      <div class="chart-container"><canvas id="activityChart" style="width:100%; height:220px;"></canvas></div>
+    </div>
+
+    <!-- USERS -->
+    <div class="tab-content" id="tabUsers">
+      <div class="list-header"><h3>All Users</h3><span class="count" id="usersCount">0</span></div>
+      <div class="users-table-wrapper">
+        <table class="users-table">
+          <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="usersBody"><tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading users...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="tab-content" id="tabQuestions">
+      <div class="selector-row">
+        <select id="qSubjectSelect"><option value="">Select Subject</option></select>
+        <select id="qYearSelect"><option value="">Select Year</option></select>
+        <span class="grade-badge" id="qGradeBadge">Grade 6</span>
+        <button class="btn-add" id="qAddBtn"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div class="list-header"><h3 id="qListTitle">Questions</h3><span class="count" id="qCount">0</span></div>
+      <div id="qListContainer"><div class="empty-state"><i class="fas fa-book-open"></i><p>No questions yet</p></div></div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="tab-content" id="tabNotes">
+      <div class="selector-row">
+        <select id="nSubjectSelect"><option value="">Select Subject</option></select>
+        <select id="nYearSelect"><option value="">Select Year</option></select>
+        <span class="grade-badge" id="nGradeBadge">Grade 6</span>
+        <button class="btn-add" id="nAddBtn"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div class="list-header"><h3 id="nListTitle">Notes</h3><span class="count" id="nCount">0</span></div>
+      <div id="nListContainer"><div class="empty-state"><i class="fas fa-sticky-note"></i><p>No notes yet</p></div></div>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="tab-content" id="tabPayments">
+      <div class="list-header"><h3>Payment Requests</h3><span class="count" id="pCount">0</span></div>
+      <div style="overflow-x:auto;">
+        <table class="payments-table">
+          <thead><tr><th>User</th><th>Grade</th><th>Amount</th><th>Status</th><th>Date</th><th>Transaction ID</th><th>Actions</th></tr></thead>
+          <tbody id="paymentsBody"><tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No payments yet</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-content" id="tabSettings">
+      <h3 style="color:var(--accent);">Payment Settings</h3>
+      <div id="settingsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS MODAL (for admin account settings) ===== -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-header"><h2><i class="fas fa-cog" style="color:var(--accent);"></i> Admin Controls</h2><button class="modal-close" id="settingsModalClose"><i class="fas fa-times"></i></button></div>
+    <div class="settings-grid">
+      <div class="settings-card"><h4><i class="fas fa-envelope"></i> Change Email</h4><p>Send verification to update your email.</p><button class="btn-save" id="changeEmailBtn">Send</button></div>
+      <div class="settings-card"><h4><i class="fas fa-key"></i> Change Password</h4><p>Send a password reset link.</p><button class="btn-save" id="changePasswordBtn">Reset</button></div>
+      <div class="settings-card"><h4><i class="fas fa-trash-alt" style="color:var(--danger);"></i> Clear All Data</h4><p>Delete all questions, notes, payments.</p><button class="btn-save btn-danger" id="clearDataBtn">Delete</button></div>
+      <div class="settings-card"><h4><i class="fas fa-database"></i> Clear Cache</h4><p>Remove offline Firestore cache.</p><button class="btn-save" id="clearCacheBtn">Clear</button></div>
+      <div class="settings-card" style="grid-column: span 2;"><h4><i class="fas fa-download"></i> Export Data</h4><p>Download JSON backup of all data.</p><button class="btn-save" id="exportDataBtn">Export</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ITEM MODAL (for questions & notes) ===== -->
+<div class="modal-overlay" id="itemModal">
+  <div class="modal">
+    <div class="modal-header"><h2 id="modalTitle">Add Item</h2><button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button></div>
+    <form id="itemForm">
+      <div id="modalFields"></div>
+      <button type="submit" class="btn-save" id="modalSaveBtn"><i class="fas fa-save"></i> Save</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== CDN Chart.js ===== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script type="module">
+  import { loadLanguage, getCurrentLanguage } from './js/modules/languages.js';
+  document.addEventListener('DOMContentLoaded', () => {
+    loadLanguage(getCurrentLanguage());
+  });
+  import './js/modules/admin.js';
+</script>
+
+</body>
+</html>

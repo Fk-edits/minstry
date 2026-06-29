@@ -1,0 +1,22 @@
+{
+  "name": "ethio-ministry",
+  "version": "1.0.0",
+  "description": "Exam preparation app for Ethiopian students",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^6.2.1",
+    "@capacitor/core": "^6.2.1"
+  },
+  "keywords": [
+    "education",
+    "exam",
+    "ethiopia"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

@@ -1,0 +1,35 @@
+/* ============================================================
+   ADMIN ADD QUESTION STYLES
+   ============================================================ */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+  color: var(--text-primary);
+}
+.form-group label .required { color: var(--danger); }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.form-group textarea { resize: vertical; min-height: 80px; }
+.btn { width: 100%; padding: 0.8rem; font-size: 1rem; }

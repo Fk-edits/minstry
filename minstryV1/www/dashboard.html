@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Dashboard – Ethio Ministry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-left">
+    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Ethio <span>Ministry</span></span>
+  </div>
+  <div class="header-right">
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+    <button class="profile-icon" id="profileBtn" title="Profile"><i class="fas fa-user-graduate"></i></button>
+  </div>
+</div>
+
+<!-- ===== GRADE SELECTOR ===== -->
+<div class="grade-selector">
+  <div class="grade-toggle" id="gradeToggle">
+    <button class="grade-btn" data-grade="6">Grade 6</button>
+    <button class="grade-btn active" data-grade="8">Grade 8</button>
+  </div>
+</div>
+
+<!-- ===== VIEW CONTAINER ===== -->
+<div class="view-container">
+  <!-- Exam View -->
+  <div id="subjectGrid" class="subject-grid">
+    <div class="loading-spinner" style="grid-column:1/-1; padding:2rem; text-align:center; color:var(--text-muted);">
+      <i class="fas fa-spinner fa-spin"></i> Loading subjects...
+    </div>
+  </div>
+  <!-- Notes View -->
+  <div id="notesView" class="notes-grid" style="display:none;"></div>
+</div>
+
+<!-- ===== UNLOCK SECTION ===== -->
+<div class="unlock-section">
+  <button class="unlock-btn" id="unlockAllBtn"><i class="fas fa-lock"></i> Unlock All – 300 Birr</button>
+  <a href="#" class="video-link" id="videoLink">
+    <i class="fab fa-youtube"></i> Watch video on how to unlock all
+  </a>
+</div>
+
+<!-- ===== BOTTOM NAVIGATION ===== -->
+<div class="bottom-nav">
+  <button class="nav-item active" id="examNav">
+    <i class="fas fa-pen-alt"></i>
+    <span>Exam</span>
+  </button>
+  <button class="nav-item" id="notesNav">
+    <i class="fas fa-book-open"></i>
+    <span>Note</span>
+  </button>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebarDrawer">
+  <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+  <div class="sidebar-header">
+    <i class="fas fa-book-open"></i>
+    <div class="brand-name">Ethio Ministry</div>
+    <div class="brand-sub">Grade 6 & 8</div>
+  </div>
+  <div class="sidebar-menu">
+    <a id="sidebarProfile"><i class="fas fa-user"></i> Profile</a>
+    <a href="#"><i class="fas fa-question-circle"></i> Relevant Questions</a>
+    <a href="#"><i class="fas fa-comments"></i> Frequently asked que.</a>
+    <a href="#"><i class="fas fa-info-circle"></i> Info</a>
+    <a href="#"><i class="fas fa-star"></i> Success Story</a>
+    <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+    <a href="#" id="refreshSubjects"><i class="fas fa-sync-alt"></i> Refresh Subjects</a>
+    <div class="section-title"><i class="fas fa-share-alt"></i> Communicate</div>
+    <a href="#"><i class="fab fa-telegram"></i> Join us on telegram</a>
+    <a href="#" id="shareApp"><i class="fas fa-share-alt"></i> Share the app on telegram</a>
+  </div>
+  <div class="sidebar-footer">v1.0</div>
+</div>
+
+<!-- ===== PROFILE MODAL ===== -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-user-circle" style="color:var(--accent);"></i> Profile</h2>
+      <button class="modal-close" id="profileModalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="profile-avatar">
+      <div class="avatar" id="modalAvatar">U</div>
+      <div class="profile-name" id="modalName">User Name</div>
+      <div class="profile-email" id="modalEmail">user@email.com</div>
+    </div>
+    <div class="profile-info">
+      <div class="info-row">
+        <span class="label">Full Name</span>
+        <span class="value" id="profileNameDisplay">User Name</span>
+        <button class="edit-btn" id="profileEditName"><i class="fas fa-pen"></i></button>
+      </div>
+      <div class="info-row" id="profileNameEdit" style="display:none;">
+        <span class="label">Full Name</span>
+        <span class="value"><input type="text" id="profileNameInput" value="User Name"></span>
+        <button class="edit-btn" id="profileSaveName"><i class="fas fa-check" style="color:var(--success);"></i></button>
+      </div>
+      <div class="info-row">
+        <span class="label">Email</span>
+        <span class="value" id="profileEmailDisplay">user@email.com</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Phone</span>
+        <span class="value" id="profilePhoneDisplay">Not provided</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Payment Status</span>
+        <span class="value" id="profilePaymentStatus">
+          <span id="profileGrade6" class="status-badge locked">Grade 6: 🔒 Locked</span>
+          <span id="profileGrade8" class="status-badge locked">Grade 8: 🔒 Locked</span>
+        </span>
+      </div>
+    </div>
+    <button class="modal-btn" id="changePasswordBtn"><i class="fas fa-key"></i> Change Password</button>
+    <button class="modal-btn danger" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</div>
+
+<!-- ===== PAYMENT MODAL ===== -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-lock" style="color:var(--accent);"></i> Unlock All</h2>
+      <button class="modal-close" id="paymentModalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <p>To unlock all content for <strong id="paymentGradeDisplay">Grade 8</strong>, follow these steps:</p>
+    <div class="payment-instructions">
+      <div class="label">Send payment to Telebirr</div>
+      <div class="phone">09XXXXXXXX</div>
+      <div class="amount">Amount: <strong id="paymentAmount">300</strong> Birr</div>
+    </div>
+    <p class="helper">After sending, click the button below to confirm.</p>
+    <button class="payment-btn" id="confirmPaymentBtn"><i class="fas fa-check-circle"></i> I have paid</button>
+    <div id="paymentStatus" class="payment-status" style="display:none;">✅ Payment request sent! Awaiting admin approval.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<script type="module">
+  import { loadLanguage, getCurrentLanguage } from './js/modules/languages.js';
+  document.addEventListener('DOMContentLoaded', () => {
+    loadLanguage(getCurrentLanguage());
+  });
+  import './js/modules/dashboard.js';
+</script>
+
+</body>
+</html>

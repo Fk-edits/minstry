@@ -1,0 +1,22 @@
+{
+  "name": "Ethio Ministry – Grade 6 & 8",
+  "short_name": "Ethio Ministry",
+  "description": "Exam preparation app for Ethiopian students",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f8fa",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

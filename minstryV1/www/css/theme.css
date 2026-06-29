@@ -1,0 +1,12 @@
+/* theme.css – Just a placeholder; variables are in global.css */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.theme-toggle:hover { background: var(--bg-hover); color: var(--accent); }

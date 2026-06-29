@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Exam – Ethio Ministry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/exam.css">
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i></button>
+    <span class="header-title" id="examTitle">Exam</span>
+    <div class="header-right">
+      <div class="timer" id="timerDisplay"><i class="fas fa-clock"></i> 01:00:00</div>
+    </div>
+  </div>
+  <div class="exam-container" id="examContainer">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div><span class="progress-text" id="progressText">Question 1 of 10</span></div>
+    <div class="question-card" id="questionCard">
+      <div id="passageContainer" style="display:none;"><div class="passage" id="passageText"></div></div>
+      <div class="question-text" id="questionText">Loading question...</div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="nav-buttons">
+        <button class="btn btn-outline" id="prevBtn" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+        <button class="btn btn-primary" id="nextBtn">Next <i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div id="submitSection" style="display:none;"><button class="btn btn-success" id="submitBtn"><i class="fas fa-check-circle"></i> Submit Exam</button></div>
+    <div id="resultContainer" style="display:none;">
+      <div class="result-summary" id="resultSummary"></div>
+      <div class="result-details" id="resultDetails"></div>
+      <button class="btn btn-primary" id="resultBackBtn"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Capacitor) window.Capacitor.Plugins.PrivacyScreen.enable();
+    });
+  </script>
+  <script type="module">
+    import { loadLanguage, getCurrentLanguage } from './js/modules/languages.js';
+    document.addEventListener('DOMContentLoaded', () => loadLanguage(getCurrentLanguage()));
+    import './js/modules/exam.js';
+  </script>
+</body>
+</html>

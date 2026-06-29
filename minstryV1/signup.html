@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Sign Up – Ethio Ministry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-header">
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+      <span class="login-title" data-i18n="signup">Sign Up</span>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <div class="login-container">
+      <div class="login-icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="app-name">Ethio <span>Ministry</span></div>
+      <div class="app-sub" data-i18n="create_account">Create your account</div>
+
+      <form class="login-form" id="signupForm">
+        <div class="input-group">
+          <span class="input-icon"><i class="fas fa-user"></i></span>
+          <input type="text" id="name" placeholder="Full Name" data-i18n="name" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fas fa-envelope"></i></span>
+          <input type="email" id="email" placeholder="Email address" data-i18n="email" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fas fa-lock"></i></span>
+          <input type="password" id="password" placeholder="Password (min 8 chars, letters & numbers)" minlength="8" required>
+          <button type="button" class="password-toggle" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" data-i18n="signup">Sign Up</button>
+      </form>
+
+      <div class="login-links" style="justify-content:center;">
+        <a href="login.html" data-i18n="already_have_account">Already have an account? Log in</a>
+      </div>
+
+      <div id="errorMsg" class="error-msg"></div>
+      <div id="successMsg" class="error-msg" style="background:var(--success-light); color:var(--success); display:none;">✅ Account created! Please verify your email. Redirecting...</div>
+      <div class="login-footer" data-i18n="knowledge_is_power">📚 Start your journey today</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loadLanguage, getCurrentLanguage } from './js/modules/languages.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLanguage(getCurrentLanguage());
+    });
+
+    import { auth, createUserWithEmailAndPassword, sendEmailVerification, db, doc, setDoc, serverTimestamp, onAuthStateChanged } from './js/firebase-config.js';
+    import { showToast } from './js/modules/utils.js';
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = 'dashboard.html';
+    });
+
+    const toggleBtn = document.getElementById('togglePassword');
+    const pwdField = document.getElementById('password');
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = pwdField.type === 'password';
+      pwdField.type = isPassword ? 'text' : 'password';
+      toggleBtn.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+    });
+
+    const form = document.getElementById('signupForm');
+    const errorDiv = document.getElementById('errorMsg');
+    const successDiv = document.getElementById('successMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.style.display = 'none';
+      successDiv.style.display = 'none';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = pwdField.value;
+
+      // Strong password: at least 8 chars, letters and numbers
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+      if (!passwordRegex.test(password)) {
+        showToast('Password must be at least 8 characters with letters and numbers.', 'warning');
+        errorDiv.textContent = 'Password must be at least 8 characters with letters and numbers.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      if (!name || !email) {
+        showToast('Please fill in all fields.', 'warning');
+        errorDiv.textContent = 'Please fill in all fields.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, 'users', user.uid), {
+          name: name,
+          email: email,
+          isAdmin: false,
+          unlockedGrades: [],
+          createdAt: serverTimestamp()
+        });
+
+        await sendEmailVerification(user);
+
+        successDiv.style.display = 'block';
+        showToast('Account created! Please verify your email.', 'success');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 3000);
+      } catch (err) {
+        let msg = 'Signup failed. ';
+        if (err.code === 'auth/email-already-in-use') msg += 'Email already in use.';
+        else if (err.code === 'auth/weak-password') msg += 'Password too weak.';
+        else if (err.code === 'auth/invalid-email') msg += 'Invalid email format.';
+        else msg += err.message;
+        showToast(msg, 'error');
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+      }
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    themeToggle.addEventListener('click', () => {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      localStorage.setItem('theme', dark ? 'light' : 'dark');
+      themeToggle.innerHTML = dark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    });
+  </script>
+</body>
+</html>

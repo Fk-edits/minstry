@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Login – Ethio Ministry</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-header">
+      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+      <span class="login-title" data-i18n="login">Login</span>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <div class="login-container">
+      <div class="login-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <div class="app-name">Ethio <span>Ministry</span></div>
+      <div class="app-sub" data-i18n="exam_prep">Grade 6 & 8 Exam Preparation</div>
+
+      <form class="login-form" id="loginForm">
+        <div class="input-group">
+          <span class="input-icon"><i class="fas fa-envelope"></i></span>
+          <input type="email" id="email" placeholder="Email address" autocomplete="email" data-i18n="email" required>
+        </div>
+        <div class="input-group">
+          <span class="input-icon"><i class="fas fa-lock"></i></span>
+          <input type="password" id="password" placeholder="Password" autocomplete="current-password" data-i18n="password" required>
+          <button type="button" class="password-toggle" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" data-i18n="login">Login</button>
+      </form>
+
+      <div class="login-links">
+        <a href="signup.html" data-i18n="create_account">Create account</a>
+        <a href="#" id="forgotPassword" data-i18n="forgot_password">Forgot password?</a>
+      </div>
+
+      <div id="errorMsg" class="error-msg"></div>
+      <div class="login-footer" data-i18n="knowledge_is_power">📚 Knowledge is power</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loadLanguage, getCurrentLanguage } from './js/modules/languages.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLanguage(getCurrentLanguage());
+    });
+
+    import { auth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from './js/firebase-config.js';
+    import { showToast } from './js/modules/utils.js';
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = 'dashboard.html';
+    });
+
+    // Password toggle
+    const toggleBtn = document.getElementById('togglePassword');
+    const pwdField = document.getElementById('password');
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = pwdField.type === 'password';
+      pwdField.type = isPassword ? 'text' : 'password';
+      toggleBtn.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+    });
+
+    const form = document.getElementById('loginForm');
+    const errorDiv = document.getElementById('errorMsg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorDiv.style.display = 'none';
+      const email = document.getElementById('email').value.trim();
+      const password = pwdField.value;
+      if (!email || !password) {
+        showToast('Please fill in all fields.', 'error');
+        errorDiv.textContent = 'Please fill in all fields.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // redirect handled by onAuthStateChanged
+      } catch (err) {
+        let msg = 'Login failed. ';
+        if (err.code === 'auth/user-not-found') msg += 'User not found.';
+        else if (err.code === 'auth/wrong-password') msg += 'Wrong password.';
+        else if (err.code === 'auth/invalid-email') msg += 'Invalid email format.';
+        else if (err.code === 'auth/too-many-requests') msg += 'Too many attempts. Try again later.';
+        else msg += err.message;
+        showToast(msg, 'error');
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+      }
+    });
+
+    document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        showToast('Please enter your email address.', 'warning');
+        errorDiv.textContent = 'Please enter your email address.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showToast('Password reset email sent!', 'success');
+        errorDiv.style.background = 'var(--success-light)';
+        errorDiv.style.color = 'var(--success)';
+        errorDiv.textContent = '✅ Password reset email sent!';
+        errorDiv.style.display = 'block';
+      } catch (err) {
+        showToast('Error: ' + err.message, 'error');
+        errorDiv.textContent = 'Error: ' + err.message;
+        errorDiv.style.display = 'block';
+      }
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    themeToggle.addEventListener('click', () => {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      localStorage.setItem('theme', dark ? 'light' : 'dark');
+      themeToggle.innerHTML = dark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+    });
+  </script>
+</body>
+</html>

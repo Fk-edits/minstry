@@ -1,0 +1,21 @@
+.detail-container { max-width: 720px; margin: 0 auto; padding: 1rem; }
+.year-tabs { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.year-tab { padding: 0.4rem 1rem; border: 1px solid var(--border-color); border-radius: 40px; background: transparent; font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+.year-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.year-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+.progress-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-color); margin-bottom: 1.2rem; }
+.progress-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.progress-stats div { display: flex; flex-direction: column; }
+.progress-stats .label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.progress-stats .value { font-weight: 700; font-size: 1.1rem; color: var(--text-primary); }
+.units-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.unit-item { background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 0.8rem 1rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.unit-item .name { font-weight: 500; }
+.unit-item .info { display: flex; align-items: center; gap: 0.8rem; font-size: 0.8rem; color: var(--text-secondary); }
+.unit-item .info .lock-icon { color: var(--danger); }
+.unit-item .info .unlock-icon { color: var(--success); }
+.unit-item .info .count { font-weight: 600; }
+.unlock-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-color); margin-top: 1.2rem; text-align: center; }
+.unlock-card .unlock-info { display: flex; justify-content: center; gap: 1rem; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+.unlock-card .btn { margin: 0.5rem 0; }
+.unlock-card .hint { font-size: 0.7rem; color: var(--text-muted); }

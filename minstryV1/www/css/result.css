@@ -1,0 +1,10 @@
+.result-container { max-width: 600px; margin: 0 auto; padding: 1.5rem; }
+.result-summary { text-align: center; padding: 2rem 0; }
+.result-summary .score { font-size: 4rem; font-weight: 700; color: var(--accent); }
+.result-summary .percentage { font-size: 1.5rem; color: var(--text-secondary); }
+.result-summary .message { font-size: 1.2rem; margin-top: 0.5rem; }
+.result-details { margin-top: 1.5rem; }
+.result-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); }
+.result-item .status.correct { color: var(--success); }
+.result-item .status.wrong { color: var(--danger); }
+#retryBtn, #dashboardBtn { margin-top: 1rem; width: 100%; }

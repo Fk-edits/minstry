@@ -1,0 +1,19 @@
+{
+  "appId": "com.ethio.ministry",
+  "appName": "Ethio Ministry",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffff"
+    },
+    "PrivacyScreen": {
+      "enable": true
+    }
+  }
+}
